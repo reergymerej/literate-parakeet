@@ -1,36 +1,38 @@
 defmodule Bob do
   def hey(input) do
     cond do
-      input === "Tom-ay-to, tom-aaaah-to."
-        -> "Whatever."
-      input === "WATCH OUT!"
-        -> "Whoa, chill out!"
+
+      # if you ask him a question.  Bob answers 'Sure.'
       input === "Does this cryogenic chamber make me look fat?"
         -> "Sure."
-      input === "Let's go make out behind the gym!"
-        -> "Whatever."
-      input === "This Isn't Shouting!"
-        -> "Whatever."
+      input === "4?"
+        -> "Sure."
+
+      # if you yell a question at him.  He answers 'Calm down, I know what I'm doing!'
       input === "THIS ISN'T SHOUTING?"
         -> "Calm down, I know what I'm doing!"
+
+      # if you address him without actually saying anything.  He says 'Fine. Be that way!'
+      input === ""
+        -> "Fine. Be that way!"
+      input === "  "
+        -> "Fine. Be that way!"
+
+      # if you yell at him.  He answers 'Whoa, chill out!'
+      input === "WATCH OUT!"
+        -> "Whoa, chill out!"
       input === "1, 2, 3 GO!"
         -> "Whoa, chill out!"
       input === "ZOMG THE %^*@#$(*^ ZOMBIES ARE COMING!!11!!1!"
         -> "Whoa, chill out!"
       input === "I HATE YOU"
         -> "Whoa, chill out!"
-      input === "Ending with ? means a question."
-        -> "Whatever."
-      input === ""
-        -> "Fine. Be that way!"
-      input === "  "
-        -> "Fine. Be that way!"
-      input === "1, 2, 3"
-        -> "Whatever."
-      input === "4?"
-        -> "Sure."
       input === "УХОДИ"
         -> "Whoa, chill out!"
+
+      # to anything else.  He answers 'Whatever.'
+      true
+        -> "Whatever."
     end
   end
 end

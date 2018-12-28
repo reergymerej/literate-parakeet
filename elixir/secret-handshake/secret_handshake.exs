@@ -1,6 +1,6 @@
-use Bitwise
-
 defmodule SecretHandshake do
+  use Bitwise
+
   @doc """
   Determine the actions of a secret handshake based on the binary
   representation of the given `code`.
@@ -15,43 +15,26 @@ defmodule SecretHandshake do
 
   10000 = Reverse the order of the operations in the secret handshake
   """
+
+  # easy to extend
+  @rules [
+    { 0b1, "wink" },
+    { 0b10, "double blink" },
+    { 0b100, "close your eyes" },
+    { 0b1000, "jump" },
+    { 0b10000, &Enum.reverse/1 },
+  ]
+
   @spec commands(code :: integer) :: list(String.t())
   def commands(code) do
-    # convert code to binary
-    # use Bitwise (or div/rem)
-    # 16 &&& 10000 = 16
-    #
-    # These are just bitflags.  To check them, just use AND for the one we're
-    # interested in.
-    #
-    # Should we wink?
-    # code &&& 1 === 1
-    #
-    # It would be nice to write these in binary.  How?
-    #
-    # 0b1010101
-    # rtl, check bits and add to list of commands
-    # reverse if 10000
-    checks = [
-      { 0b1, "wink" },
-      { 0b10, "double blink" },
-      { 0b100, "close your eyes"},
-      { 0b1000, "jump"}
-    ]
-    actions = Enum.reduce(checks, [], fn(tup, acc) ->
-      { flag, val } = tup
-      if ((flag &&& code) === flag) do
-        # How do we appned to a list?
-        acc ++ [val]
-      else
-        acc
-      end
+    Enum.reduce(@rules, [], fn(x, acc) ->
+      { num, result } = x
+      do_commands(acc, num == (code &&& num), result)
     end)
-
-    if ((0b10000 &&& code) === 0b10000) do
-      Enum.reverse(actions)
-    else
-      actions
-    end
   end
+
+  defp do_commands(acc, do?, todo)
+  defp do_commands(acc, false, _), do: acc
+  defp do_commands(acc, true, str) when is_binary(str), do: acc ++ [str]
+  defp do_commands(acc, true, fun), do: fun.(acc)
 end

@@ -1,5 +1,6 @@
 if !System.get_env("EXERCISM_TEST_EXAMPLES") do
-  Code.load_file("secret_handshake.exs", __DIR__)
+  # Code.load_file("secret_handshake.exs", __DIR__)
+  Code.load_file("two.exs", __DIR__)
 end
 
 ExUnit.start()
@@ -67,6 +68,10 @@ defmodule SecretHandshakeTest do
     # @tag :pending
     test "do nothing if lower 5 bits not set" do
       assert SecretHandshake.commands(32) == []
+    end
+
+    test "ignore higher bits" do
+      assert SecretHandshake.commands(0b110011) == ["double blink", "wink"]
     end
   end
 end

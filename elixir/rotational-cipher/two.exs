@@ -1,3 +1,9 @@
+# Summary
+#
+# There are some clever things here, but it's not really clear.  The recursion
+# seems to be forced.  I don't get why we're so set on goofing with lists.
+# https://exercism.io/tracks/elixir/exercises/rotational-cipher/solutions/e90d3a40098d4a708551e450a18e07f4
+
 defmodule RotationalCipher do
   @doc """
   Given a plaintext and amount to shift by, return a rotated string.
@@ -51,6 +57,9 @@ defmodule RotationalCipher do
   # in/2 is a macro that converts to Enum.member?/2
   #
   # How do macros actually work?
+  # https://elixir-lang.org/getting-started/meta/macros.html
+  # They are advanced, basically a way to extend the language.  Super cool, but
+  # too complex for now.
   #
   # rem is i(rem/2)
   defp rot(a, shift) when a in ?a..?z, do: [rem(a + shift - ?a, 26) + ?a]

@@ -53,7 +53,7 @@ defmodule RotationalCipher do
 
   defp rotate_char(char, shift) do
     # conditional, like switch but allows various expressions per clause
-    # This could also have been handled with guards in the functions.
+    # This could also have been handled with guards in the functionst pus.
     cond do
       # checks if which range we're in, upper or lower case
       # mods 26 with offset

@@ -7,7 +7,7 @@ defmodule Strain do
   """
   @spec keep(list :: list(any), fun :: (any -> boolean)) :: list(any)
   def keep(list, fun) do
-    do_filter(list, fun, true)
+    do_filter(list, fun)
   end
 
   @doc """
@@ -22,7 +22,7 @@ defmodule Strain do
     do_filter(list, fun, false)
   end
 
-  defp do_filter(list, fun, predicate_result) do
+  defp do_filter(list, fun, predicate_result \\ true) do
     # We need to build a new list.
     # We can still iterate the list, just not use filter.
     # We can't be side-effecty and test within the loop, adding to an external

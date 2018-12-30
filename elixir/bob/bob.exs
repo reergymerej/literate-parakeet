@@ -18,12 +18,10 @@ defmodule Bob do
   end
 
   defp is_shouting?(text) do
-    Kernel.!( is_talking_in_caps?(text) )
-    and String.upcase(text) == text
-    or String.ends_with?(text, "!")
+    String.upcase(text) == text and !is_using_caps?(text)
   end
 
-  defp is_talking_in_caps?(text) do
+  defp is_using_caps?(text) do
     text
     |> String.split()
     |> Enum.all?(&(String.capitalize(&1) == &1))

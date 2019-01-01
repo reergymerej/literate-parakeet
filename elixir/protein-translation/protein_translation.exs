@@ -24,7 +24,22 @@ defmodule ProteinTranslation do
   """
   @spec of_rna(String.t()) :: {atom, list(String.t())}
   def of_rna(rna) do
-    {:ok, "Methionine"}
+    # split into codons
+    codons = rna
+    |> String.codepoints()
+    |> Enum.chunk_every(3)
+    |> Enum.map(&(Enum.join(&1)))
+
+    IO.puts(codons)
+
+
+    proteins = [
+      "Methionine",
+      "Phenylalanine",
+      "Tryptophan"
+    ]
+
+    {:ok, codons}
   end
 
   @doc """

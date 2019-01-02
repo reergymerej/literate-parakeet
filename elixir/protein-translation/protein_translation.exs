@@ -37,9 +37,16 @@ defmodule ProteinTranslation do
         {:ok, value} -> value
       end
     end)
-    |> Enum.filter(&(&1 != "STOP"))
 
-    {:ok, proteins}
+    # Find the index of STOP and truncate there.
+    stop_index = Enum.find_index(proteins, &(&1 == "STOP"))
+    if (stop_index) do
+      last = stop_index - 1
+      proteins = Enum.slice(proteins, 0..last)
+      {:ok, proteins}
+    else
+      {:ok, proteins}
+    end
   end
 
   @doc """

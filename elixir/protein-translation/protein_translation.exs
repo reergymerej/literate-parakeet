@@ -35,17 +35,22 @@ defmodule ProteinTranslation do
     proteins = Enum.map(codons, fn(x) ->
       case of_codon(x) do
         {:ok, value} -> value
+        {:error, _} -> ":("
       end
     end)
 
-    # Find the index of STOP and truncate there.
-    stop_index = Enum.find_index(proteins, &(&1 == "STOP"))
-    if (stop_index) do
-      last = stop_index - 1
-      proteins = Enum.slice(proteins, 0..last)
-      {:ok, proteins}
+    if (Enum.member?(proteins, ":(")) do
+      {:error, "invalid RNA"}
     else
-      {:ok, proteins}
+      # Find the index of STOP and truncate there.
+      stop_index = Enum.find_index(proteins, &(&1 == "STOP"))
+      if (stop_index) do
+        last = stop_index - 1
+        proteins = Enum.slice(proteins, 0..last)
+        {:ok, proteins}
+      else
+        {:ok, proteins}
+      end
     end
   end
 
@@ -72,6 +77,9 @@ defmodule ProteinTranslation do
   """
   @spec of_codon(String.t()) :: {atom, String.t()}
   def of_codon(codon) do
-    Map.fetch(@codons, codon)
+    case Map.fetch(@codons, codon) do
+      {:ok, value} -> {:ok, value}
+      :error -> {:error, "invalid codon"}
+    end
   end
 end

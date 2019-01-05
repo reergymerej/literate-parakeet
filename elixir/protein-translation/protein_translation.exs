@@ -24,35 +24,16 @@ defmodule ProteinTranslation do
   """
   @spec of_rna(String.t()) :: {atom, list(String.t())}
   def of_rna(rna) do
-    codons = rna
-    # split string into list of values for enumeration
-    |> String.codepoints()
-    # split into group of groups
-    |> Enum.chunk_every(3)
-    # join inner groups into a binary
-    |> Enum.map(&(Enum.join(&1)))
+    do_of_rna(rna, [])
+  end
 
-    proteins = Enum.map(codons, fn(x) ->
-      case of_codon(x) do
-        {:ok, value} -> value
-        {:error, _} -> ":("
-      end
-    end)
-
-    if (Enum.member?(proteins, ":(")) do
-      {:error, "invalid RNA"}
-    else
-      # Find the index of STOP and truncate there.
-      stop_index = Enum.find_index(proteins, &(&1 == "STOP"))
-      if (stop_index) do
-        last = stop_index - 1
-        proteins = Enum.slice(proteins, 0..last)
-        {:ok, proteins}
-      else
-        {:ok, proteins}
-      end
+  defp do_of_rna(<<codon::binary-size(3), rest::binary>>, acc) do
+    case of_codon(codon) do
+      {:ok, value} -> do_of_rna(rest, acc ++ [value])
     end
   end
+
+  defp do_of_rna(string, acc) when string == "", do: {:ok, acc}
 
   @doc """
   Given a codon, return the corresponding protein

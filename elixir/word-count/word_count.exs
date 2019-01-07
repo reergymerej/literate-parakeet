@@ -11,16 +11,16 @@ defmodule Words do
     |> String.replace(~r/[:!,&@$%^]/i, "")
     |> String.split(" ", trim: true)
     |> Enum.reduce(Map.new(), fn(x, acc) ->
-      do_count(x, acc)
+      word = String.downcase(x)
+      do_count(word, acc)
       end)
   end
 
   defp do_count(word, acc) do
-    down = String.downcase(word)
-    if (Map.has_key?(acc, down)) do
-      acc = %{acc | down => Map.get(acc, down) + 1 }
+    if (Map.has_key?(acc, word)) do
+      %{acc | word => Map.get(acc, word) + 1}
     else
-      acc = Map.put(acc, down, 1)
+      Map.put(acc, word, 1)
     end
   end
 end

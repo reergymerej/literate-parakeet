@@ -6,8 +6,6 @@ defmodule Words do
   """
   @spec count(String.t()) :: map
   def count(sentence) do
-    # split into words
-    # count them up
     sentence
     |> String.split(" ", trim: true)
     |> Enum.reduce(Map.new(), fn(x, acc) ->
@@ -16,6 +14,10 @@ defmodule Words do
   end
 
   defp do_count(word, acc) do
-    acc = Map.put(acc, word, 1)
+    if (Map.has_key?(acc, word)) do
+      acc = %{acc | word => Map.get(acc, word) + 1 }
+    else
+      acc = Map.put(acc, word, 1)
+    end
   end
 end

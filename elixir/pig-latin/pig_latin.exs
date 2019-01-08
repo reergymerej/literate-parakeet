@@ -23,8 +23,25 @@ defmodule PigLatin do
 
   defp do_translate_word(word) do
     cond do
-      String.starts_with?(word, ~w(a e i o u)) ->
+      not (starts_with_consonant?(word)) ->
         word <> "ay"
+      true ->
+        count = get_leading_consonants_count(word, 0)
+        <<head::binary-size(count), tail::binary>> = word
+        tail <> head <> "ay"
+    end
+  end
+
+  defp starts_with_consonant?(word) do
+    not (String.starts_with?(word, ~w(a e i o u)))
+  end
+
+  defp get_leading_consonants_count(word, acc) do
+    if (starts_with_consonant?(word)) do
+      <<_head::binary-size(1), tail::binary>> = word
+      get_leading_consonants_count(tail, acc + 1)
+    else
+      acc
     end
   end
 end

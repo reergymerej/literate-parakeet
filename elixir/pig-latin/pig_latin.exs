@@ -27,8 +27,8 @@ defmodule PigLatin do
         word <> "ay"
 
       starts_with_consonant_and_qu?(word) ->
-        count = get_leading_consonants_count(word)
-        { head, tail } = String.split_at(word, count + 1)
+        count = get_leading_consonants_count(word) + 2
+        { head, tail } = String.split_at(word, count - 1)
         tail <> head <> "ay"
 
       starts_with_consonant?(word) ->
@@ -44,9 +44,10 @@ defmodule PigLatin do
 
   defp starts_with_consonant_and_qu?(word) do
     if (starts_with_consonant?(word)) do
-      count = get_leading_consonants_count(word)
+      # offset for q
+      count = get_leading_consonants_count(word) - 1
       <<_head::binary-size(count), tail::binary>> = word
-      String.starts_with?(word, "qu")
+      String.starts_with?(tail, "qu")
     else
       false
     end

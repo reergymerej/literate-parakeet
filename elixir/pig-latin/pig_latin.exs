@@ -23,7 +23,7 @@ defmodule PigLatin do
 
   defp do_translate_word(word) do
     cond do
-      not (starts_with_consonant?(word)) ->
+      starts_with_vowel_sound?(word) ->
         word <> "ay"
 
       starts_with_y_after_consonants?(word) ->
@@ -41,6 +41,11 @@ defmodule PigLatin do
         <<head::binary-size(count), tail::binary>> = word
         tail <> head <> "ay"
     end
+  end
+
+  defp starts_with_vowel_sound?(word) do
+    not starts_with_consonant?(word)
+    or String.starts_with?(word, ["xr", "yt"])
   end
 
   defp starts_with_consonant?(word) do

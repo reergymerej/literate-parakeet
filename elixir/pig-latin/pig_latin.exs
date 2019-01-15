@@ -45,7 +45,14 @@ defmodule PigLatin do
 
   defp starts_with_vowel_sound?(word) do
     not starts_with_consonant?(word)
-    or String.starts_with?(word, ["xr", "yt"])
+    or starts_with_xy_and_const?(word)
+  end
+
+  defp starts_with_xy_and_const?(word) do
+    <<head::binary-size(1), tail::binary>> = word
+    if (
+
+    String.starts_with?(word, ["xr", "yt"])
   end
 
   defp starts_with_consonant?(word) do

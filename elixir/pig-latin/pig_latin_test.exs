@@ -120,7 +120,7 @@ defmodule PigLatinTest do
       assert PigLatin.translate("yttria") == "yttriaay"
     end
 
-    @tag :pending
+    # @tag :pending
     test "word beginning with y, followed by another consonant" do
       assert PigLatin.translate("yddria") == "yddriaay"
     end

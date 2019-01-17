@@ -5,16 +5,21 @@ defmodule BeerSong do
   @spec verse(integer) :: String.t()
   def verse(number) when (number == 0) do
     """
-    No more bottles of beer on the wall, no more bottles of beer.
+    #{get_line(number)}
     Go to the store and buy some more, 99 bottles of beer on the wall.
     """
   end
 
   def verse(number) do
     """
-    #{beer_address(number)} of beer on the wall, #{beer_address(number)} of beer.
+    #{get_line(number)}
     Take #{next_beer_pronoun(number - 1)} down and pass it around, #{beer_address(number - 1)} of beer on the wall.
     """
+  end
+
+  defp get_line(beer_number) do
+    "#{beer_address(beer_number)} of beer on the wall, #{beer_address(beer_number)} of beer."
+    |> String.capitalize()
   end
 
   defp next_beer_pronoun(number) when (number > 0) do
@@ -41,7 +46,8 @@ defmodule BeerSong do
   Get the entire beer song for a given range of numbers of bottles.
   """
   @spec lyrics(Range.t()) :: String.t()
-  def lyrics(range) do
-    Enum.reduce(range, "", fn (number, acc) -> acc <> verse(number) end)
+  def lyrics(range \\ 99..0) do
+    Enum.reduce(range, [], fn (number, acc) -> acc ++ [verse(number)] end)
+    |> Enum.join("\n")
   end
 end

@@ -28,7 +28,7 @@ defmodule ListOps do
   end
 
   defp reverse(acc, [head | tail]) do
-    reverse([head] ++ acc, tail)
+    reverse([head | acc], tail)
   end
 
   @spec map(list, (any -> any)) :: list
@@ -37,11 +37,11 @@ defmodule ListOps do
   end
 
   defp map(acc, [], f) do
-    acc
+    reverse([], acc)
   end
 
   defp map(acc, [head | tail], f) do
-    map(acc ++ [f.(head)], tail, f)
+    map(([f.(head) | acc]), tail, f)
   end
 
   @spec filter(list, (any -> as_boolean(term))) :: list
@@ -50,12 +50,12 @@ defmodule ListOps do
   end
 
   defp filter(acc, [], f) do
-    acc
+    reverse([], acc)
   end
 
   defp filter(acc, [head | tail], f) do
     if f.(head) do
-      filter(acc ++ [head], tail, f)
+      filter([head | acc], tail, f)
     else
       filter(acc, tail, f)
     end
@@ -63,7 +63,12 @@ defmodule ListOps do
 
   @type acc :: any
   @spec reduce(list, acc, (any, acc -> acc)) :: acc
-  def reduce(l, acc, f) do
+  def reduce([head | tail], acc, f) do
+    reduce(tail, f.(head, acc), f)
+  end
+
+  def reduce([], acc, f) do
+    acc
   end
 
   @spec append(list, list) :: list

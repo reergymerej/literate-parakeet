@@ -72,10 +72,28 @@ defmodule ListOps do
   end
 
   @spec append(list, list) :: list
+  def append([], b) do
+    b
+  end
+
+  def append(a, []) do
+    a
+  end
+
   def append(a, b) do
+    inner_append(reverse(a), b)
+  end
+
+  defp inner_append(acc, []) do
+    reverse(acc)
+  end
+
+  defp inner_append(acc, [head | tail]) do
+    inner_append([head | acc], tail)
   end
 
   @spec concat([[any]]) :: [any]
   def concat(ll) do
+    reduce(ll, [], &(append(&2, &1)))
   end
 end

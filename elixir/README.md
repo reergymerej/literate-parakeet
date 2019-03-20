@@ -1,0 +1,3 @@
+## Install
+
+mix deps.get

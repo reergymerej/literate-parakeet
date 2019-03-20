@@ -41,7 +41,7 @@ defmodule ListOps do
   end
 
   defp map(acc, [head | tail], f) do
-    map(([f.(head) | acc]), tail, f)
+    map([f.(head) | acc], tail, f)
   end
 
   @spec filter(list, (any -> as_boolean(term))) :: list
@@ -94,6 +94,6 @@ defmodule ListOps do
 
   @spec concat([[any]]) :: [any]
   def concat(ll) do
-    reduce(ll, [], &(append(&2, &1)))
+    reduce(ll, [], &append(&2, &1))
   end
 end
